@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900">
+  <!-- Placeholder 01 -->
+  <defs><filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="90"/></filter></defs>
+  <rect width="1200" height="900" fill="#151515"/>
+  <g filter="url(#b)">
+    <circle cx="380" cy="520" r="260" fill="#b7e04a"/>
+    <circle cx="860" cy="320" r="220" fill="#3f5f0c"/>
+  </g>
+</svg>
