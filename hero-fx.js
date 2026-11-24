@@ -20,6 +20,8 @@
   const lightCanvas = scene && scene.querySelector(".hero__light");
   const photo = scene && scene.querySelector(".hero__photo");
   if (!fxCanvas || !lightCanvas || !photo) return;
+  // Телефон и планшет (2026-11-25): живая шапка не запускается — лёгкая версия, иначе iPhone вылетал
+  if (window.matchMedia("(hover: none) and (pointer: coarse)").matches) return;
 
   let ctx = fxCanvas.getContext("2d");      // экраны, корпуса машин — обычное наложение
   let lctx = lightCanvas.getContext("2d");  // свет: вспышки, ореолы, фары — слой «экран» (screen)

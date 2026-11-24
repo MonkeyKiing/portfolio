@@ -7508,7 +7508,7 @@ body { background: var(--g-bg); }
 }
 /* главная кнопка в шапке — зелёный текст со стрелкой, вторая — светлая */
 .btn--dark { color: var(--g-green); }
-.btn--dark::after { content: " →"; }
+/* стрелка у «Смотреть проекты» убрана (его просьба 2026-11-25) */
 .btn--ghost { color: var(--g-text); }
 /* нажатие без «пластикового» подскока */
 .btn.is-pressing, .pill.is-pressing, .pj-pill.is-pressing, .smm-tab.is-pressing, .nav__link.is-pressing,
@@ -7949,4 +7949,385 @@ button.contact-link--copy { font: inherit; color: inherit; text-align: left; wid
     mask: linear-gradient(90deg, transparent 0, #000 30%), linear-gradient(180deg, #000 88%, transparent 100%);
     mask-composite: intersect;
   }
+}
+
+/* ==========================================================================
+   ТЕЛЕФОН (2026-11-25, его iPhone 17 Pro Max: шапка уезжала влево, фильтры за экраном,
+   страница вылетала «повторно возникла проблема»)
+   1) Шапка: картинка во всю ширину экрана, он на мыши — по центру кадра.
+   2) Кнопки шапки — по своей ширине, рядом слева, а не растянуты на половину экрана.
+   3) Фильтры проектов — в два ряда, без прокрутки вбок.
+   4) Ничего не вылезает за правый край.
+   ========================================================================== */
+@media (max-width: 960px) {
+  html, body { overflow-x: clip; }
+  .hero__scene {
+    left: 0;
+    width: 100%;
+    aspect-ratio: auto;
+    transform: none;
+    height: min(64vh, 560px);
+    --hero-pos: 64% 50%;
+  }
+  .hero__buttons { flex-wrap: wrap; justify-content: flex-start; gap: 12px 32px; }
+  .hero__buttons .btn { flex: 0 0 auto; padding-left: 0; padding-right: 0; }
+  .header__inner { display: flex; justify-content: flex-end; }
+}
+@media (max-width: 640px) {
+  .filters {
+    flex-wrap: wrap;
+    overflow: visible;
+    margin: 0 0 16px;
+    padding: 0;
+    gap: 4px 22px;
+  }
+  .filters .pill { flex: 0 0 auto; }
+}
+
+/* ТЕЛЕФОН И ПЛАНШЕТ — ЛЁГКАЯ ВЕРСИЯ (2026-11-25).
+   На сенсорных экранах живые обложки показываются неподвижной картинкой: десятки мигающих
+   слоёв с наложением (по 4–10 МБ каждый в памяти) роняли страницу на iPhone и в Telegram.
+   Скрытые слои с loading="lazy" телефон даже не скачивает. Шапка — фото без живых слоёв
+   (hero-fx.js на сенсорных экранах не запускается). На компьютере всё как было */
+@media (hover: none) and (pointer: coarse) {
+  .neon-cover > :not(:first-child),
+  .work-card__media > .lamp,
+  .hero__scene .hero-fx,
+  .hero__scene canvas { display: none !important; }
+  .neon-cover > :first-child { animation: none !important; }
+}
+
+/* ==========================================================================
+   ТЕЛЕФОН, ВТОРОЙ ЗАХОД (2026-11-25, его правки по просмотру в F12 → iPhone; третий раунд в тот же день).
+   Только до 640 px: компьютерная версия не меняется.
+   - общие поля слева и справа 28 px: ни один текст за них не выходит; абзацы — по ширине;
+   - шапка: «Graphic Designer» и имя по центру сверху, картинка крупно (он хорошо виден, чуть правее центра),
+     под ней текст и две кнопки по его референсу Screenshot_630 (Reset / Generate);
+   - в остальных разделах метка «01 · Projects» и заголовок — слева, метка над заголовком;
+   - проекты — 6 маленьких плиток, 3 в ряд, внутри одно короткое название;
+   - «Обо мне»: фото сверху целиком, текст под ним;
+   - программы: Adobe 2 × 2 и нейросети 3 в ряд — одной ширины;
+   - «Как я работаю»: шаги как в его референсе Screenshot_624 — полоска из чёрточек заполняется
+     зелёным, «▶ название», крупная цифра справа;
+   - контакты: заголовок в четыре строки.
+   ========================================================================== */
+.work-card__short { display: none; }
+.br-m { display: none; }
+.t-mob { display: none; }   /* текст только для телефона */
+
+@media (max-width: 640px) {
+  /* ---- общее: разделы по высоте содержимого, поля 28 px, абзацы по ширине ---- */
+  main > .section { min-height: 0; justify-content: flex-start; }
+  main > .section > .container,
+  main > .section > .container.about,
+  main > .section > .container.about-more { --gutter: 28px; padding-left: 28px; padding-right: 28px; }
+  .section__head { display: block; }
+  .section__text, .about__text, .contact__text, .contact__made, .step__text,
+  .workflow-box__text, .about-path__text, .about-more__panel p, .about-more__panel li {
+    text-align: justify;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+  .section__text { max-width: none; font-size: 1.0625rem; }   /* чуть мельче: по ширине без больших дыр между словами */
+  .footer .footer__inner { padding-left: 28px; padding-right: 28px; }
+  /* «Начало пути / Старое резюме / Вне работы» — в одну строку */
+  .about-more__buttons { flex-wrap: nowrap; justify-content: space-between; gap: 8px; }
+  .about-more__buttons .about-more__btn { padding-left: 0; padding-right: 0; font-size: 0.875rem; white-space: nowrap; }
+  .eyebrow { text-align: left; }
+
+  /* ---- шапка ---- */
+  .hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding: calc(var(--header-height) + 8px) 0 48px;
+    background: #0a0f24;
+    text-align: center;
+  }
+  .hero .hero__grid, .hero .hero__intro { display: contents; }
+  .hero .hero__eyebrow { order: 1; position: relative; z-index: 2; margin: 0 auto 6px; padding: 0 28px; text-align: center; }
+  .hero .hero__title { order: 2; position: relative; z-index: 2; margin: 0 auto; padding: 0 28px; font-size: clamp(2.6rem, 12vw, 3.4rem); line-height: 1.02; }
+  .hero__scene {
+    order: 3;
+    position: relative;
+    inset: auto;
+    left: 0;
+    width: 100%;
+    height: min(128vw, 580px);          /* крупно: он хорошо виден */
+    aspect-ratio: auto;
+    margin: 4px 0 -64px;                /* низ уходит под текст */
+    transform: none;
+    z-index: 0;
+    --hero-pos: 59% 50%;                /* он чуть правее центра экрана */
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 9%, #000 80%, transparent 100%);
+    mask-image: linear-gradient(180deg, transparent 0, #000 9%, #000 80%, transparent 100%);
+  }
+  .hero .hero__lead { order: 4; position: relative; z-index: 2; max-width: none; margin: 0; padding: 0 28px; text-align: center; }
+  .hero__lead br { display: none; }
+  .hero .hero__buttons {
+    order: 5;
+    position: relative;
+    z-index: 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: calc(100% - 56px);           /* те же поля 28 px, что у текста */
+    max-width: none;
+    margin: 28px auto 0;
+  }
+  .hero .hero__info { display: none; }
+  /* кнопки как в Screenshot_630: «Reset» — тёмная, светлее кромка сверху; «Generate» — белая. Шрифт обычный, не жирный */
+  .hero .hero__buttons .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+    padding: 0 10px;
+    border-radius: 8px;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-shadow: none;
+    white-space: nowrap;
+  }
+  .hero .hero__buttons .btn::before, .hero .hero__buttons .btn::after { display: none; }
+  .hero .hero__buttons .btn--dark,
+  .hero .hero__buttons .btn--dark:hover {
+    background: #ffffff !important;
+    color: #121315 !important;
+    border: 1px solid #ffffff;
+    box-shadow: 0 6px 18px -8px rgba(0, 0, 0, 0.6);
+  }
+  .hero .hero__buttons .btn--ghost,
+  .hero .hero__buttons .btn--ghost:hover {
+    background: linear-gradient(180deg, #25272a 0%, #18191b 100%) !important;
+    color: #f2f3f4 !important;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-top-color: rgba(255, 255, 255, 0.24);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), 0 6px 18px -8px rgba(0, 0, 0, 0.6);
+  }
+
+  /* ---- проекты ----
+     Фильтры — кнопками по центру (как «Reset» из Screenshot_630, выбранная — зелёная рамка и текст, как «Std» в 630).
+     «Все» — мозаика разных размеров, у каждой плитки пропорции близки к её картинке (ничего не тянется и не режется):
+       Инфографика — во всю ширину;   SMM (шире) | Упаковка;
+       Лого — во всю ширину;          Game | Бренды 360° (шире).
+     Один раздел в фильтре — картинка целиком в своих пропорциях, название и годы под ней */
+  .filters { justify-content: center; gap: 8px; }
+  .filters .pill,
+  .filters .pill:hover {
+    height: 34px;
+    padding: 0 13px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top-color: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(180deg, #232427 0%, #18191b 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    color: #c9cbcf;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    text-shadow: none;
+  }
+  .filters .pill.is-active {
+    border-color: rgba(124, 227, 139, 0.55);
+    background: rgba(124, 227, 139, 0.08);
+    color: var(--g-green, #7ce38b);
+  }
+  .filters .pill::before, .filters .pill.is-active::before { display: none; }
+
+  #works .works-grid:not(.is-solo) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-auto-rows: auto;
+    grid-auto-flow: row;
+    gap: 8px;
+  }
+  #works .works-grid:not(.is-solo) .work-card { grid-row: auto; min-height: 0; height: auto; }
+  #works .works-grid:not(.is-solo) [data-category="infographic"] { order: 1; grid-column: 1 / -1; aspect-ratio: 2.2; }
+  #works .works-grid:not(.is-solo) [data-category="smm"]         { order: 2; grid-column: span 3; aspect-ratio: 1.45; }
+  #works .works-grid:not(.is-solo) [data-category="packaging"]   { order: 3; grid-column: span 2; }
+  #works .works-grid:not(.is-solo) [data-category="branding"]    { order: 4; grid-column: 1 / -1; aspect-ratio: 2.2; }
+  #works .works-grid:not(.is-solo) [data-category="game"]        { order: 5; grid-column: span 2; }
+  #works .works-grid:not(.is-solo) [data-category="side"]        { order: 6; grid-column: span 3; aspect-ratio: 1.45; }
+  #works .work-card__open { border-radius: 12px; }
+  #works .works-grid:not(.is-solo) .work-card__tag,
+  #works .works-grid:not(.is-solo) .work-card__title,
+  #works .works-grid:not(.is-solo) .work-card__year { display: none; }
+  #works .works-grid:not(.is-solo) .work-card__info {
+    left: 12px; right: 12px; bottom: 10px;
+    display: block;
+    text-align: left;
+  }
+  #works .works-grid:not(.is-solo) .work-card__short {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8), 0 0 12px rgba(0, 0, 0, 0.7);
+  }
+  /* затемнение снизу, чтобы название читалось на любой обложке */
+  #works .works-grid:not(.is-solo) .work-card__open::after {
+    content: "";
+    position: absolute;
+    inset: 55% 0 0;
+    z-index: -1;
+    background: linear-gradient(180deg, transparent, rgba(0, 0, 0, 0.55));
+    pointer-events: none;
+  }
+  /* обложка «Лого» на телефоне — просто картинка целиком, без сдвига и затухания большой карточки */
+  #works .work-card__media--logo img {
+    top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; transform: none;
+    -webkit-mask-image: none; mask-image: none;
+  }
+
+  /* один раздел в фильтре: картинка в своих пропорциях, текст под ней (а не растянутая на весь экран карточка) */
+  #works .works-grid.is-solo { grid-template-columns: 1fr; grid-auto-rows: auto; }
+  #works .works-grid.is-solo .work-card:not(.is-hidden) { height: auto; min-height: 0; aspect-ratio: auto; }
+  #works .works-grid.is-solo .work-card__open { display: flex; flex-direction: column; height: auto; background: #18191b; }
+  #works .works-grid.is-solo .work-card__media { position: relative; inset: auto; z-index: 0; container-type: size; }
+  #works .works-grid.is-solo [data-category="smm"] .work-card__media         { aspect-ratio: 1600 / 1260; }
+  #works .works-grid.is-solo [data-category="branding"] .work-card__media    { aspect-ratio: 2400 / 1018; }
+  #works .works-grid.is-solo [data-category="packaging"] .work-card__media   { aspect-ratio: 1600 / 1289; }
+  #works .works-grid.is-solo [data-category="game"] .work-card__media        { aspect-ratio: 1600 / 944; }
+  #works .works-grid.is-solo [data-category="infographic"] .work-card__media { aspect-ratio: 2092 / 884; }
+  #works .works-grid.is-solo [data-category="side"] .work-card__media        { aspect-ratio: 2400 / 1018; }
+  #works .works-grid.is-solo .work-card__open::after { display: none; }
+  #works .works-grid.is-solo .work-card__short { display: none; }
+  #works .works-grid.is-solo .work-card__info {
+    position: static;
+    padding: 16px 16px 18px;
+  }
+  #works .works-grid.is-solo .work-card__title { font-size: 1.5rem; text-shadow: none; }
+
+  /* ---- обо мне: фото сверху, текст под ним ---- */
+  #about { justify-content: flex-start; padding-top: 0; }
+  .about-bg {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: 118vw;
+    max-height: 560px;
+    container-type: normal;
+  }
+  .about-bg__img {
+    position: absolute;
+    inset: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
+    object-position: 55% 100%;            /* фигура по центру (на исходном фото центр фигуры — 53,5 %) */
+    transform: none;
+    opacity: 1;
+    filter: none;
+    -webkit-mask: linear-gradient(180deg, #000 78%, transparent 100%);
+    mask: linear-gradient(180deg, #000 78%, transparent 100%);
+  }
+  /* текст чуть заходит на растворяющийся низ фото. Только у блока с текстом: у блока раскрывашек
+     такой сдвиг накрывал кнопки «Начало пути / Старое резюме / Вне работы», и они не нажимались */
+  #about .container.about { margin-top: -24px; }
+  /* «18 ▶ лет опыта / в графическом дизайне» — по левому краю, как заголовок */
+  .about-stat { justify-content: flex-start; }
+  .about-stat__label { text-align: left; }
+  /* годы пути — крупнее и жирнее, раньше их было плохо видно */
+  #about .about-path__years { font-size: 1.0625rem; font-weight: 700; color: #111214; }
+
+  /* ---- программы: ряды одной ширины (Adobe 2 × 2 и нейросети 3 в ряд), высота плиток одинаковая ---- */
+  .tools { container-type: inline-size; }
+  .tools__row--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tools__row--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .tools__row { gap: 10px; }
+  .tools__row > .tool-card,
+  .tools__row--3 > .tool-card:last-child { grid-column: auto; }
+  .tool-card {
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    height: calc((100cqw - 20px) / 3);    /* как ширина плитки нейросетей: все плитки одной высоты */
+    padding: 10px 6px;
+    border-radius: 15px;
+    text-align: center;
+  }
+  .tool-card__icon { width: 44px; height: 44px; }
+  .tool-card__name { font-size: 0.8125rem; line-height: 1.2; }
+  .tool-card__text { display: none; }
+
+  /* ---- как я работаю: как в Screenshot_624 ----
+     сверху полоска из чёрточек (серая), по ней бежит зелёная, пока шаг горит (0,5 + 0,9 с — как на компьютере);
+     под ней «▶ название», справа крупная цифра; пройденные шаги — полоска целиком зелёная */
+  .steps { display: block; }
+  .steps::before, #workflow .steps::before, .steps__line { display: none; }
+  .step {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas: "title num" "text text";
+    column-gap: 18px;
+    align-items: end;
+    padding: 22px 0 30px;
+  }
+  .step:last-of-type { padding-bottom: 0; }
+  .step__num { grid-area: num; font-size: 2.6rem; line-height: 0.9; margin: 0; }
+  .step__title {
+    grid-area: title;
+    position: relative;
+    margin: 0;
+    padding-left: 16px;
+    font-size: 1rem;
+    transition: color 0.4s;
+  }
+  .step__title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.42em;
+    border-left: 7px solid var(--g-green, #1f9e45);
+    border-top: 4.5px solid transparent;
+    border-bottom: 4.5px solid transparent;
+  }
+  .step.is-active .step__title { color: var(--g-green, #1f9e45); }
+  .step__text { grid-area: text; margin: 10px 0 0; }
+  /* дорожка и бегущая часть — над названием, шириной до цифры */
+  .step::before, .step::after, #workflow .step::before, #workflow .step.is-active::before, #workflow .step.is-done::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    width: auto;
+    height: 3px;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+    transform: none;
+  }
+  .step::after {
+    background: repeating-linear-gradient(90deg, rgba(20, 22, 26, 0.24) 0 2px, transparent 2px 4px);
+  }
+  .step::before, #workflow .step::before, #workflow .step.is-active::before, #workflow .step.is-done::before {
+    z-index: 1;
+    right: auto;
+    width: 0;
+    background: repeating-linear-gradient(90deg, var(--g-green, #1f9e45) 0 2px, transparent 2px 4px);
+    transition: width 1.4s linear;
+  }
+  #workflow .step.is-active::before, #workflow .step.is-done::before { width: 100%; }
+  #workflow .step.is-done::before { transition: none; }
+  .steps.is-resetting .step::before { transition: none; }
+  /* «Командная работа» и «Сервисы и нейросети» — по центру (его просьба) */
+  .workflow-box, .workflow-box__text { text-align: center; }
+  .workflow-box .tags { justify-content: center; }
+
+  /* ---- контакты ---- */
+  .br-m { display: inline; }
+  .contact__title { font-size: clamp(2.4rem, 11vw, 3.2rem); }
+  /* почта и Telegram — кнопки, поэтому по центру; строка про Claude и подвал — тоже по центру */
+  .contact-link { text-align: center; align-items: center; justify-items: center; }
+  .contact-link__label { justify-content: center; }
+  .contact__made { text-align: center; }
+  .footer .footer__inner { align-items: center; text-align: center; }
+
+  /* текст под «Проектами» — свой вариант для телефона: по ширине без больших пробелов */
+  .t-desk { display: none; }
+  .t-mob { display: inline; }
 }

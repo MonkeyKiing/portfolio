@@ -58,17 +58,17 @@
            Поверх фото — живые слои (hero-fx.js): огни дышат, экраны показывают ролики, летают машины, бьёт молния -->
       <div class="hero__scene" aria-hidden="false">
         <img class="hero__photo" src="images/about/hero.webp" alt="Alexander Volvakh">
-        <img class="hero-fx hero-fx--bloom" src="images/about/hero-fx/bloom.webp" alt="" aria-hidden="true">
-        <img class="hero-fx hero-fx--a" src="images/about/hero-fx/lights-a.webp" alt="" aria-hidden="true">
-        <img class="hero-fx hero-fx--b" src="images/about/hero-fx/lights-b.webp" alt="" aria-hidden="true">
+        <img class="hero-fx hero-fx--bloom" src="images/about/hero-fx/bloom.webp" alt="" aria-hidden="true" loading="lazy">
+        <img class="hero-fx hero-fx--a" src="images/about/hero-fx/lights-a.webp" alt="" aria-hidden="true" loading="lazy">
+        <img class="hero-fx hero-fx--b" src="images/about/hero-fx/lights-b.webp" alt="" aria-hidden="true" loading="lazy">
         <!-- Мышь (2026-11-16): подсветка гаснет (mouse-off) и вспыхивает (mouse + ореол), по полосе бежит огонёк -->
-        <img class="hero-fx hero-fx--normal hero-fx--mouse-off" src="images/about/hero-fx/mouse-off.png" alt="" aria-hidden="true">
-        <img class="hero-fx hero-fx--mouse" src="images/about/hero-fx/mouse.webp" alt="" aria-hidden="true">
-        <img class="hero-fx hero-fx--mouse-glow" src="images/about/hero-fx/mouse-glow.webp" alt="" aria-hidden="true">
-        <img class="hero-fx hero-fx--mouse-run" src="images/about/hero-fx/mouse.webp" alt="" aria-hidden="true">
+        <img class="hero-fx hero-fx--normal hero-fx--mouse-off" src="images/about/hero-fx/mouse-off.png" alt="" aria-hidden="true" loading="lazy">
+        <img class="hero-fx hero-fx--mouse" src="images/about/hero-fx/mouse.webp" alt="" aria-hidden="true" loading="lazy">
+        <img class="hero-fx hero-fx--mouse-glow" src="images/about/hero-fx/mouse-glow.webp" alt="" aria-hidden="true" loading="lazy">
+        <img class="hero-fx hero-fx--mouse-run" src="images/about/hero-fx/mouse.webp" alt="" aria-hidden="true" loading="lazy">
         <!-- Блики неона на нём: дышат, и время от времени по фигуре пробегает отсвет -->
-        <img class="hero-fx hero-fx--rim" src="images/about/hero-fx/rim.webp" alt="" aria-hidden="true">
-        <img class="hero-fx hero-fx--rim-run" src="images/about/hero-fx/rim.webp" alt="" aria-hidden="true">
+        <img class="hero-fx hero-fx--rim" src="images/about/hero-fx/rim.webp" alt="" aria-hidden="true" loading="lazy">
+        <img class="hero-fx hero-fx--rim-run" src="images/about/hero-fx/rim.webp" alt="" aria-hidden="true" loading="lazy">
         <canvas class="hero__light" aria-hidden="true"></canvas>
         <canvas class="hero__fx" aria-hidden="true"></canvas>
       </div>
@@ -125,7 +125,7 @@
             <p class="eyebrow">01 · Projects</p>
             <h2 class="section__title">Проекты</h2>
           </div>
-          <p class="section__text">Брендинг, SMM, инфографика и упаковка. Откройте любой проект — внутри задача, решение и результат.</p>
+          <p class="section__text"><span class="t-desk">Брендинг, SMM, инфографика и упаковка. Откройте любой проект — внутри задача, решение и результат.</span><span class="t-mob">Брендинг, SMM-дизайн, инфографика для маркетплейсов и упаковка. Откройте проект, чтобы увидеть задачу, решение и результат.</span></p>
         </div>
 
         <!-- Фильтр по направлениям. data-filter должен совпадать с data-category у карточек -->
@@ -160,6 +160,7 @@
               </span>
               <span class="work-card__info">
                 <span class="work-card__tag">SMM</span>
+                <span class="work-card__short">SMM</span>
                 <span class="work-card__title">SMM-дизайн для брендов</span>
                 <span class="work-card__year">2020 — 2026</span>
               </span>
@@ -273,6 +274,7 @@
               </span>
               <span class="work-card__info">
                 <span class="work-card__tag">Брендинг</span>
+                <span class="work-card__short">Лого</span>
                 <span class="work-card__title">Брендинг и фирменный стиль</span>
                 <span class="work-card__year">2021 — 2025</span>
               </span>
@@ -384,6 +386,7 @@
               </span>
               <span class="work-card__info">
                 <span class="work-card__tag">Упаковка</span>
+                <span class="work-card__short">Упаковка</span>
                 <span class="work-card__title">Дизайн упаковки</span>
                 <span class="work-card__year">2019 — 2024</span>
               </span>
@@ -455,6 +458,7 @@
               </span>
               <span class="work-card__info">
                 <span class="work-card__tag">Game</span>
+                <span class="work-card__short">Game</span>
                 <span class="work-card__title">В разработке</span>
                 <span class="work-card__year">2026</span>
               </span>
@@ -493,6 +497,7 @@
               </span>
               <span class="work-card__info">
                 <span class="work-card__tag">Инфографика</span>
+                <span class="work-card__short">Инфографика</span>
                 <span class="work-card__title">Инфографика для маркетплейсов</span>
                 <span class="work-card__year">2025 — 2026</span>
               </span>
@@ -568,6 +573,7 @@
               </span>
               <span class="work-card__info">
                 <span class="work-card__tag">От А до Я</span>
+                <span class="work-card__short">Бренды 360°</span>
                 <span class="work-card__title">Бренды 360°</span>
                 <span class="work-card__year">2018 — 2026</span>
               </span>
@@ -3128,7 +3134,7 @@
       <div class="container contact reveal">
         <p class="eyebrow">05 · Contact</p>
         <!-- 2026-11-23: его формулировка (было «Сделаем бренд, который узнают везде») -->
-        <h2 class="contact__title">Сделаем то, что нужно,<br>и не будем об этом <span class="text-accent">жалеть</span></h2>
+        <h2 class="contact__title">Сделаем то,<br class="br-m"> что нужно,<br>и не будем<br class="br-m"> об этом <span class="text-accent">жалеть</span></h2>
         <p class="contact__text">18 лет помогаю брендам выглядеть сильно в ленте, на упаковке, в шоуруме и на улице. Нейросети ускоряют работу, а идеи и решения остаются за мной. Напишите, что задумали, — отвечу в течение дня.</p>
 
         <div class="contact__links">
