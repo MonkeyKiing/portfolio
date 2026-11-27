@@ -57,7 +57,8 @@
            он справа на огромной мыши, слева место под меню и текст. Шапка той же пропорции, что картинка, 2538 × 1039.
            Поверх фото — живые слои (hero-fx.js): огни дышат, экраны показывают ролики, летают машины, бьёт молния -->
       <div class="hero__scene" aria-hidden="false">
-        <img class="hero__photo" src="images/about/hero.webp" alt="Alexander Volvakh">
+        <!-- 2026-11-27: на телефоне (до 640 px) — его вертикальная картинка hero-phone.webp («Обо мне/Шапка/002 - шапка для телефона.webp») -->
+        <picture><source media="(max-width: 640px)" srcset="images/about/hero-phone.webp"><img class="hero__photo" src="images/about/hero.webp" alt="Alexander Volvakh"></picture>
         <img class="hero-fx hero-fx--bloom" src="images/about/hero-fx/bloom.webp" alt="" aria-hidden="true" loading="lazy">
         <img class="hero-fx hero-fx--a" src="images/about/hero-fx/lights-a.webp" alt="" aria-hidden="true" loading="lazy">
         <img class="hero-fx hero-fx--b" src="images/about/hero-fx/lights-b.webp" alt="" aria-hidden="true" loading="lazy">
@@ -511,22 +512,32 @@
                   <img src="images/smm/dafna/brand/logo-white.svg" alt="DAFNA — doimo birga">
                 </h3>
                 <p class="case__project">Коммерческая инфографика и дизайн карточек товаров для маркетплейсов</p>
-                <p class="case__lead">
+                <p class="case__lead" data-tab-src="about">
                   Инфографика для маркетплейсов — это визуальное оформление карточек товаров. Она помогает покупателю
                   быстро познакомиться с продуктом, понять его преимущества и характеристики. Хорошая карточка
                   выделяет товар среди конкурентов и упрощает решение о покупке.
                 </p>
               </div>
 
-              <h4 class="case__subtitle">Цель проекта</h4>
-              <p class="case__lead">
+              <!-- 2026-11-27, его просьба: на телефоне вместо длинного текста — 4 кнопки, по нажатию текст раскрывается под ними.
+                   Источники текста помечены data-tab-src, на компьютере всё как было (кнопки скрыты) -->
+              <div class="case-tabs" data-case-tabs>
+                <button class="case-tabs__btn" type="button" data-tab="about">Инфографика</button>
+                <button class="case-tabs__btn" type="button" data-tab="goal">Цель проекта</button>
+                <button class="case-tabs__btn" type="button" data-tab="work">Что я делал</button>
+                <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+                <div class="case-tabs__panel" hidden></div>
+              </div>
+
+              <h4 class="case__subtitle" data-tab-src="goal">Цель проекта</h4>
+              <p class="case__lead" data-tab-src="goal">
                 Разработать визуальное оформление товаров DAFNA для маркетплейсов, включая Ozon и Uzum.
                 Карточки должны выделять продукцию среди конкурентов, наглядно показывать её преимущества,
                 привлекать внимание покупателей и делать бренд узнаваемее.
               </p>
 
-              <h4 class="case__subtitle">Что я делал</h4>
-              <ul class="case__list">
+              <h4 class="case__subtitle" data-tab-src="work">Что я делал</h4>
+              <ul class="case__list" data-tab-src="work">
                 <li><b>Визуальная концепция.</b> Единый стиль карточек на основе фирменного стиля DAFNA и своя подача для разных линеек: офисных и игровых кресел, кресел руководителя, столов и стульев.</li>
                 <li><b>Фотомонтаж и ретушь.</b> Показывал товар в подходящей среде — в офисе, кабинете, игровой комнате, вместе с человеком. Обрабатывал изображения, настраивал цвет и свет.</li>
                 <li><b>Инфографика.</b> Переводил преимущества и характеристики на язык графики: иконки и плашки, крупные планы деталей, размерные линии, значки нагрузки и гарантии.</li>
@@ -534,7 +545,7 @@
                 <li><b>Наборы и адаптация.</b> Серии слайдов на один товар от обложки до размеров, версии под каждый цвет, карточки на русском и узбекском языках, финальные материалы в формате площадок.</li>
               </ul>
 
-              <ul class="case__meta">
+              <ul class="case__meta" data-tab-src="meta">
                 <li><span>Клиент</span>DAFNA — магазин мебели</li>
                 <li><span>Роль</span>Дизайнер инфографики</li>
                 <li><span>Период</span>2025 — 2026</li>
@@ -1253,13 +1264,21 @@
                 <h3 class="case__title case__title--logo case__title--logo-flush">
                   <img src="images/smm/home-market/brand/logo-white.svg" alt="Home Market">
                 </h3>
-                <p class="case__lead">
+                <p class="case__lead" data-tab-src="about">
                   Home Market продаёт всё для дома: мебель, посуду, текстиль, свет и декор.
                   С 2018 по 2025 год я делал рекламу и оформление сети вне соцсетей: билборды, автобусы, эскалаторы, витрины, подарочные карты, анимацию и выставочный стенд.
                 </p>
               </div>
 
-              <ul class="case__meta">
+              <!-- 2026-11-27: на телефоне вступление — 3 кнопки, текст раскрывается под ними -->
+              <div class="case-tabs case-tabs--3" data-case-tabs>
+                <button class="case-tabs__btn" type="button" data-tab="about">Home Market</button>
+                <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+                <button class="case-tabs__btn" type="button" data-tab="who">С кем работал</button>
+                <div class="case-tabs__panel" hidden></div>
+              </div>
+
+              <ul class="case__meta" data-tab-src="meta">
                 <li><span>Клиент</span>Home Market — всё для дома</li>
                 <li><span>Роль</span>Графический дизайнер</li>
                 <li><span>Период</span>2018 — 2025</li>
@@ -1269,9 +1288,9 @@
             </div>
 
             <!-- С кем я работал -->
-            <section class="pj-section">
+            <section class="pj-section pj-section--who">
               <h4 class="brand-title">С кем я работал</h4>
-              <p class="brand-text">Home Market — бренд товаров для дома: мебель, посуда, текстиль, свет и декор. Его должны были узнавать везде: на улице, в транспорте, в здании и в руках покупателя. Поэтому реклама держалась на простых вещах: зелёный цвет, одна крупная идея, короткая фраза и понятный путь до магазина.</p>
+              <p class="brand-text" data-tab-src="who">Home Market — бренд товаров для дома: мебель, посуда, текстиль, свет и декор. Его должны были узнавать везде: на улице, в транспорте, в здании и в руках покупателя. Поэтому реклама держалась на простых вещах: зелёный цвет, одна крупная идея, короткая фраза и понятный путь до магазина.</p>
             </section>
 
             <!-- Десять направлений: клик ведёт к разделу ниже -->
@@ -1291,7 +1310,7 @@
                 <button class="pj-dir" type="button" data-pj-jump="hm-promo">
                   <!-- Ценник качается, процент пульсирует -->
                   <svg class="pj-icon pj-anim-tag" viewBox="0 0 24 24"><g class="pj-swing"><path d="M12 2l8 8v11H4V10z"/><circle cx="12" cy="8.5" r="1.2"/><path class="pj-pct" d="M9 18l6-6M9.5 13h.01M14.5 17.5h.01"/></g></svg>
-                  <b>Десятилетие и акции</b><span>Знак к 10 годам сети, Фестиваль скидок, лайтбоксы-история</span>
+                  <b>Десяти&shy;летие и акции</b><span>Знак к 10 годам сети, Фестиваль скидок, лайтбоксы-история</span>
                 </button>
                 <button class="pj-dir" type="button" data-pj-jump="hm-mall">
                   <!-- Ступени эскалатора едут вниз -->
@@ -1310,7 +1329,7 @@
                 <button class="pj-dir" type="button" data-pj-jump="hm-stand">
                   <!-- Куб вращается: стенд сделан в 3D -->
                   <svg class="pj-icon pj-anim-cube" viewBox="0 0 24 24"><g class="pj-turn"><path d="M12 2.5l8.5 4.8v9.4L12 21.5l-8.5-4.8V7.3zM3.5 7.3L12 12l8.5-4.7M12 12v9.5"/></g></svg>
-                  <b>Выставочный стенд</b><span>Вся 3D-модель в Cinema 4D, панели и флаеры для стенда</span>
+                  <b>Выста&shy;вочный стенд</b><span>Вся 3D-модель в Cinema 4D, панели и флаеры для стенда</span>
                 </button>
                 <button class="pj-dir" type="button" data-pj-jump="hm-web">
                   <!-- В окне браузера меняется баннер -->
@@ -1724,16 +1743,24 @@
               <h3 class="case__title case__title--logo">
                 <img src="images/smm/home-market/brand/logo-white.svg" alt="Home Market">
               </h3>
-              <p class="case__lead">
+              <p class="case__lead" data-tab-src="about">
                 С 2020 по 2025 год я отвечал за визуал соцсетей Home Market.
                 Фотографировал товары на профессиональную камеру, обрабатывал снимки
                 и создавал из них рекламу для бренда.
               </p>
             </div>
 
+            <!-- 2026-11-27: на телефоне описание — 3 кнопки, текст раскрывается под ними (как в Инфографике) -->
+            <div class="case-tabs case-tabs--3" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">SMM</button>
+              <button class="case-tabs__btn" type="button" data-tab="work">Что я делал</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+
             <!-- Что я делал: по одному пункту в строке -->
-            <h4 class="case__subtitle">Что я делал</h4>
-            <ul class="case__list">
+            <h4 class="case__subtitle" data-tab-src="work">Что я делал</h4>
+            <ul class="case__list" data-tab-src="work">
               <li>Товарные посты для всех отделов — посуда, текстиль, декор, мебель, техника.</li>
               <li>Акции, скидки и рассрочка — макеты, которые считываются за секунду.</li>
               <li>Конкурсы и совместные кампании с брендами Kukmara, Karcher, Riley &amp; Tailor.</li>
@@ -1741,7 +1768,7 @@
               <li>Предметная фотосъёмка на профессиональную камеру, ретушь и подготовка снимков для рекламы.</li>
             </ul>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Home Market — всё для дома</li>
               <li><span>Роль</span>SMM-дизайнер, фотограф</li>
               <li><span>Период</span>2020 — 2025</li>
@@ -1770,15 +1797,23 @@
               <h3 class="case__title case__title--logo case__title--logo-flush">
                 <img src="images/smm/dafna/brand/logo-white.svg" alt="DAFNA — doimo birga">
               </h3>
-              <p class="case__lead">
+              <p class="case__lead" data-tab-src="about">
                 С 2025 года я создаю визуал соцсетей DAFNA — магазина мебели для офиса и дома.
                 Обложки Reels, посты, акции, лендинг и оформление профиля на русском и узбекском языках.
               </p>
             </div>
 
+            <!-- 2026-11-27: на телефоне описание — 3 кнопки, текст раскрывается под ними (как в Home Market) -->
+            <div class="case-tabs case-tabs--3" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">SMM</button>
+              <button class="case-tabs__btn" type="button" data-tab="work">Что я делал</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+
             <!-- Что я делал: по одному пункту в строке -->
-            <h4 class="case__subtitle">Что я делал</h4>
-            <ul class="case__list">
+            <h4 class="case__subtitle" data-tab-src="work">Что я делал</h4>
+            <ul class="case__list" data-tab-src="work">
               <li>Обложки Reels и YouTube для обзоров кресел, столов и диванов.</li>
               <li>Акции, скидки и рассрочка — от сезонных распродаж до Яндекс Сплит и Alif.</li>
               <li>Коллаборации и мероприятия: BYD, Woodtech &amp; Mebel Expo, EMAN, Teplo Fest.</li>
@@ -1787,7 +1822,7 @@
               <li>Картинки для лендинга и сезонные обложки актуальных с аватарами.</li>
             </ul>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>DAFNA — магазин мебели</li>
               <li><span>Роль</span>SMM-дизайнер</li>
               <li><span>Период</span>2025 — 2026</li>
@@ -1816,15 +1851,23 @@
               <h3 class="case__title case__title--logo case__title--logo-flush">
                 <img src="images/smm/kchm/brand/logo-white.svg" alt="KCHM Group">
               </h3>
-              <p class="case__lead">
+              <p class="case__lead" data-tab-src="about">
                 С 2022 по 2024 год я создавал визуал соцсетей KCHM Group — компании по продаже спецтехники и грузовиков.
                 Посты о лизинге, обложки Reels, рассылки и праздничные публикации на русском и узбекском языках.
               </p>
             </div>
 
+            <!-- 2026-11-27: на телефоне описание — 3 кнопки, текст раскрывается под ними (как в Home Market) -->
+            <div class="case-tabs case-tabs--3" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">SMM</button>
+              <button class="case-tabs__btn" type="button" data-tab="work">Что я делал</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+
             <!-- Что я делал: по одному пункту в строке -->
-            <h4 class="case__subtitle">Что я делал</h4>
-            <ul class="case__list">
+            <h4 class="case__subtitle" data-tab-src="work">Что я делал</h4>
+            <ul class="case__list" data-tab-src="work">
               <li>Обложки Reels и Stories: обзоры техники, ремонт, отзывы клиентов.</li>
               <li>Серии постов о лизинге экскаваторов, погрузчиков, катков и бульдозеров.</li>
               <li>Карточки техники LiuGong и Howo для рассылки.</li>
@@ -1833,7 +1876,7 @@
               <li>Праздничные посты: Навруз, Рамазан, Курбан-хайит, День независимости, 9 Мая.</li>
             </ul>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>KCHM Group — спецтехника и грузовики</li>
               <li><span>Роль</span>SMM-дизайнер</li>
               <li><span>Период</span>2022 — 2024</li>
@@ -1869,21 +1912,29 @@
               <h3 class="case__title case__title--logo case__title--logo-flush">
                 <img src="images/smm/barbican/brand/logo.png" alt="Barbican">
               </h3>
-              <p class="case__lead">
+              <p class="case__lead" data-tab-src="about">
                 Осенью 2022 года я вёл визуал соцсетей Barbican — безалкогольного солодового напитка из ОАЭ.
                 Задача — познакомить аудиторию с новым напитком и рассказать, где его купить.
               </p>
             </div>
 
-            <h4 class="case__subtitle">Что я делал</h4>
-            <ul class="case__list">
+            <!-- 2026-11-27: на телефоне описание — 3 кнопки, текст раскрывается под ними (как в Home Market) -->
+            <div class="case-tabs case-tabs--3" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">SMM</button>
+              <button class="case-tabs__btn" type="button" data-tab="work">Что я делал</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+
+            <h4 class="case__subtitle" data-tab-src="work">Что я делал</h4>
+            <ul class="case__list" data-tab-src="work">
               <li>Посты для ленты о самом напитке: что это солодовый напиток, без алкоголя и из натурального сырья.</li>
               <li>Серию сторис, где у каждого вкуса свой цвет и свои фрукты.</li>
               <li>Посты и сторис о том, где купить напиток в Ташкенте.</li>
               <li>Обложки актуальных в фирменных цветах бренда.</li>
             </ul>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Barbican — солодовые напитки из ОАЭ</li>
               <li><span>Роль</span>SMM-дизайнер</li>
               <li><span>Период</span>Сентябрь — ноябрь 2022</li>
@@ -1924,14 +1975,22 @@
               <h3 class="case__title case__title--logo case__title--logo-flush">
                 <img src="images/smm/gipfel/brand/logo-white.png" alt="Gipfel International — правильная посуда">
               </h3>
-              <p class="case__lead">
+              <p class="case__lead" data-tab-src="about">
                 С 2020 по 2021 год я создавал визуал соцсетей Gipfel — посуды для кухни под брендами Gipfel и Werner.
                 Карусели товаров со скидками, конкурсы, распродажи и праздничные открытки.
               </p>
             </div>
 
-            <h4 class="case__subtitle">Что я делал</h4>
-            <ul class="case__list">
+            <!-- 2026-11-27: на телефоне описание — 3 кнопки, текст раскрывается под ними (как в Home Market) -->
+            <div class="case-tabs case-tabs--3" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">SMM</button>
+              <button class="case-tabs__btn" type="button" data-tab="work">Что я делал</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+
+            <h4 class="case__subtitle" data-tab-src="work">Что я делал</h4>
+            <ul class="case__list" data-tab-src="work">
               <li>Карусели товаров: формы для выпечки, сковороды, кастрюли, ножи, тёрки — от обложки до деталей.</li>
               <li>Ценники и размеры прямо в посте: старая цена, новая цена, объём и диаметр.</li>
               <li>Распродажи Magic Week и Magic Friday, розыгрыши и конкурсы.</li>
@@ -1939,7 +1998,7 @@
               <li>Обложки актуальных: подарки, скидки, отзывы.</li>
             </ul>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Gipfel International — посуда для кухни</li>
               <li><span>Роль</span>SMM-дизайнер</li>
               <li><span>Период</span>Апрель 2020 — апрель 2021</li>
@@ -1965,14 +2024,22 @@
               <h3 class="case__title case__title--logo case__title--logo-flush">
                 <img src="images/smm/lux-laundry/brand/logo-white.png" alt="Lux Laundry — оперативно чисто!">
               </h3>
-              <p class="case__lead">
+              <p class="case__lead" data-tab-src="about">
                 Я вёл соцсети химчистки Lux Laundry в два захода: в 2020–2021 годах — светлые квадратные посты
                 с вещами, в 2024–2025 — новая подача в формате 4:5 с героями и крупной типографикой.
               </p>
             </div>
 
-            <h4 class="case__subtitle">Что я делал</h4>
-            <ul class="case__list">
+            <!-- 2026-11-27: на телефоне описание — 3 кнопки, текст раскрывается под ними (как в Home Market) -->
+            <div class="case-tabs case-tabs--3" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">SMM</button>
+              <button class="case-tabs__btn" type="button" data-tab="work">Что я делал</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+
+            <h4 class="case__subtitle" data-tab-src="work">Что я делал</h4>
+            <ul class="case__list" data-tab-src="work">
               <li>Посты об услугах: от пуховиков и свадебных платьев до ковров, колясок и мягких игрушек.</li>
               <li>Рубрики «Мифы о химчистке» и «Факты о химчистке».</li>
               <li>Акции: скидки на детские вещи, бесплатная доставка, открытие нового филиала.</li>
@@ -1980,7 +2047,7 @@
               <li>Прайс-лист в сторис.</li>
             </ul>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Lux Laundry — химчистка и прачечная</li>
               <li><span>Роль</span>SMM-дизайнер</li>
               <li><span>Период</span>2020 — 2021, 2024 — 2025</li>
@@ -2010,12 +2077,18 @@
             </h3>
 
             <p class="eyebrow">Брендинг · Февраль 2025</p>
-            <p class="case__lead">
+            <!-- 2026-11-27: на телефоне описание — 2 кнопки, текст раскрывается под ними -->
+            <div class="case-tabs" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">Брендинг</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+            <p class="case__lead" data-tab-src="about">
               Логотип и гайдлайн для стоматологической клиники. Знак соединяет корону, зуб и имплант —
               премиальность, профессионализм и современные технологии в одном образе.
             </p>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Imperio Clinic — стоматология</li>
               <li><span>Что сделано</span>Логотип, гайдлайн, носители</li>
               <li><span>Дата</span>Февраль 2025</li>
@@ -2256,9 +2329,15 @@
             </h3>
 
             <p class="eyebrow">Брендинг · Декабрь 2021</p>
-            <p class="case__lead">Логотип для пожилого мастера, который вырезал из деревянных брусочков фигурки — птичек и зверюшек. Я предложил два варианта: ретро с растительным орнаментом и современный знак из годовых колец. Логотип я передал заказчику, и дальнейшая его судьба мне неизвестна.</p>
+            <!-- 2026-11-27: на телефоне описание — 2 кнопки, текст раскрывается под ними -->
+            <div class="case-tabs" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">Логотип</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+            <p class="case__lead" data-tab-src="about">Логотип для пожилого мастера, который вырезал из деревянных брусочков фигурки — птичек и зверюшек. Я предложил два варианта: ретро с растительным орнаментом и современный знак из годовых колец. Логотип я передал заказчику, и дальнейшая его судьба мне неизвестна.</p>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Drevo Dobra — мастер деревянных фигурок</li>
               <li><span>Что сделано</span>Логотип, два варианта</li>
               <li><span>Дата</span>Декабрь 2021</li>
@@ -2301,9 +2380,15 @@
             </h3>
 
             <p class="eyebrow">Презентация · Март 2022</p>
-            <p class="case__lead">Презентация группы компаний Kittek Group — официального импортёра бытовой техники мировых брендов в Узбекистане с 1999 года. Красная линия ведёт через все слайды, как нить истории компании.</p>
+            <!-- 2026-11-27: на телефоне описание — 2 кнопки, текст раскрывается под ними -->
+            <div class="case-tabs" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">Презентация</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+            <p class="case__lead" data-tab-src="about">Презентация группы компаний Kittek Group — официального импортёра бытовой техники мировых брендов в Узбекистане с 1999 года. Красная линия ведёт через все слайды, как нить истории компании.</p>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Kittek Group — импорт бытовой техники</li>
               <li><span>Что сделано</span>Дизайн презентации, 30 слайдов</li>
               <li><span>Дата</span>Март 2022</li>
@@ -2365,9 +2450,15 @@
             </h3>
 
             <p class="eyebrow">Презентация · Октябрь 2021</p>
-            <p class="case__lead">Презентация сети сервисных центров Pedant.ru (ремонт и обмен смартфонов) для арендодателей торговых центров: почему выгодно пустить сервис к себе.</p>
+            <!-- 2026-11-27: на телефоне описание — 2 кнопки, текст раскрывается под ними -->
+            <div class="case-tabs" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">Презентация</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+            <p class="case__lead" data-tab-src="about">Презентация сети сервисных центров Pedant.ru (ремонт и обмен смартфонов) для арендодателей торговых центров: почему выгодно пустить сервис к себе.</p>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Pedant.ru — ремонт и обмен смартфонов</li>
               <li><span>Что сделано</span>Дизайн презентации, 16 слайдов</li>
               <li><span>Дата</span>Октябрь 2021</li>
@@ -2416,9 +2507,15 @@
             </h3>
 
             <p class="eyebrow">Рекламные материалы · Апрель — ноябрь 2023</p>
-            <p class="case__lead">Рекламные материалы для напитка Rani Float с кусочками фруктов: лайтбокс, оклейка фургона, воблер и шелфтокер для магазинов.</p>
+            <!-- 2026-11-27: на телефоне описание — 2 кнопки, текст раскрывается под ними -->
+            <div class="case-tabs" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">Реклама</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+            <p class="case__lead" data-tab-src="about">Рекламные материалы для напитка Rani Float с кусочками фруктов: лайтбокс, оклейка фургона, воблер и шелфтокер для магазинов.</p>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Rani — фруктовые напитки</li>
               <li><span>Что сделано</span>Лайтбокс, оформление авто, воблер, шелфтокер</li>
               <li><span>Дата</span>Апрель — ноябрь 2023</li>
@@ -2472,9 +2569,15 @@
             </h3>
 
             <p class="eyebrow">Упаковка · Декабрь 2019 — сентябрь 2020</p>
-            <p class="case__lead">Линейка чипсов Ritos: шесть вкусов, и на каждой пачке свой супергерой. Для каждого вкуса я сделал пачку, развёртку для печати и рекламные мокапы, а для магазинов — постер А3.</p>
+            <!-- 2026-11-27: на телефоне описание — 2 кнопки, текст раскрывается под ними -->
+            <div class="case-tabs" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">Упаковка</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+            <p class="case__lead" data-tab-src="about">Линейка чипсов Ritos: шесть вкусов, и на каждой пачке свой супергерой. Для каждого вкуса я сделал пачку, развёртку для печати и рекламные мокапы, а для магазинов — постер А3.</p>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Ritos — чипсы</li>
               <li><span>Что сделано</span>Упаковка 6 вкусов, развёртки для печати, рекламные мокапы, постер А3</li>
               <li><span>Дата</span>Декабрь 2019 — сентябрь 2020</li>
@@ -2595,9 +2698,15 @@
             </h3>
 
             <p class="eyebrow">Упаковка · 2022 — 2024</p>
-            <p class="case__lead">Упаковка для мясной продукции Taxtaniyoz OTA: серия коробок полукопчёных сосисок гриль в четырёх вкусах и пакет мясных чипсов из салями.</p>
+            <!-- 2026-11-27: на телефоне описание — 2 кнопки, текст раскрывается под ними -->
+            <div class="case-tabs" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">Упаковка</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+            <p class="case__lead" data-tab-src="about">Упаковка для мясной продукции Taxtaniyoz OTA: серия коробок полукопчёных сосисок гриль в четырёх вкусах и пакет мясных чипсов из салями.</p>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Taxtaniyoz OTA — мясная продукция</li>
               <li><span>Что сделано</span>Упаковка сосисок гриль (4 вкуса), пакет мясных чипсов, развёртки для печати, мокапы</li>
               <li><span>Дата</span>Июль 2022 — сосиски, май 2024 — мясные чипсы</li>
@@ -2704,12 +2813,18 @@
             </h3>
 
             <p class="eyebrow">Брендинг · Март 2021</p>
-            <p class="case__lead">
+            <!-- 2026-11-27: на телефоне описание — 2 кнопки, текст раскрывается под ними -->
+            <div class="case-tabs" data-case-tabs>
+              <button class="case-tabs__btn" type="button" data-tab="about">Брендинг</button>
+              <button class="case-tabs__btn" type="button" data-tab="meta">Проект</button>
+              <div class="case-tabs__panel" hidden></div>
+            </div>
+            <p class="case__lead" data-tab-src="about">
               Фирменный стиль для фастфуда: шрифтовой логотип, который гибко меняется под носитель,
               и четыре паттерна-стихии. Крупные буквы хорошо читаются на любом расстоянии.
             </p>
 
-            <ul class="case__meta">
+            <ul class="case__meta" data-tab-src="meta">
               <li><span>Клиент</span>Taqachi Food — фастфуд</li>
               <li><span>Что сделано</span>Платформа бренда, логотип, паттерны, брендбук, упаковка, униформа, реклама</li>
               <li><span>Дата</span>Март — май 2021</li>
@@ -3121,6 +3236,19 @@
               <span class="tag">Claude</span>
               <span class="tag">Syntx</span>
             </div>
+            <!-- 2026-11-27, его просьба: на телефоне вместо меток — иконки, как на экране телефона (иконка и подпись). На компьютере — прежние метки -->
+            <ul class="app-icons">
+              <li><img src="images/icons/apps/figma.svg" alt=""><span>Figma</span></li>
+              <li><img src="images/icons/apps/trello.svg" alt=""><span>Trello</span></li>
+              <li><img src="images/icons/apps/notion.svg" alt=""><span>Notion</span></li>
+              <li><img src="images/icons/apps/telegram.svg" alt=""><span>Telegram</span></li>
+              <li><img src="images/icons/apps/gdrive.svg" alt=""><span>Google Drive</span></li>
+              <li><img src="images/icons/apps/midjourney.svg" alt=""><span>Midjourney</span></li>
+              <li><img src="images/icons/apps/ps.svg" alt=""><span>Photoshop AI</span></li>
+              <li><img src="images/icons/apps/chatgpt.svg" alt=""><span>ChatGPT</span></li>
+              <li><img src="images/icons/apps/claude.svg" alt=""><span>Claude</span></li>
+              <li><img src="images/icons/apps/syntx.svg" alt=""><span>Syntx</span></li>
+            </ul>
           </div>
         </div>
       </div>

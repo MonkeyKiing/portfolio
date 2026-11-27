@@ -150,6 +150,9 @@ document.addEventListener("DOMContentLoaded", () => {
     initGalleries(modalBody); // если в кейсе есть галерея — строим её
     initInfographic(modalBody); // то же для просмотра инфографики
     initProject(modalBody); // и для кейса стороннего проекта
+    buildPointTabs(modalBody); // пункты «Продукт / Амбиции / …» — кнопками на телефоне
+    buildFactTabs(modalBody); // «Задача / Как делал / Объём» в «Брендах 360°» — кнопками на телефоне
+    buildAiTabs(modalBody); // «Герои из нейросети…» — кнопка с иконками нейросетей над героями
 
     caseColors.forEach((name) => {
       modalWindow.style.setProperty(name, colorSource.style.getPropertyValue(name));
@@ -191,6 +194,110 @@ document.addEventListener("DOMContentLoaded", () => {
   // Закрытие: крестик или клик по затемнению
   modal.querySelectorAll("[data-close]").forEach((el) => {
     el.addEventListener("click", closeModal);
+  });
+
+  // 2026-11-27 (его просьба, Taqachi «Платформа бренда»): список пунктов .brand-points--cols на телефоне —
+  // кнопки по названию пункта (<strong>), текст раскрывается под ними. На компьютере кнопки скрыты, список как был
+  function buildPointTabs(root) {
+    root.querySelectorAll(".brand-points--cols").forEach((ul, k) => {
+      const box = document.createElement("div");
+      box.className = "case-tabs case-tabs--3 case-tabs--points";
+      box.dataset.caseTabs = "";
+      [...ul.children].forEach((li, i) => {
+        const key = "bp" + k + "-" + i;
+        li.dataset.tabSrc = key;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "case-tabs__btn";
+        btn.dataset.tab = key;
+        btn.textContent = li.querySelector("strong") ? li.querySelector("strong").textContent : String(i + 1);
+        box.appendChild(btn);
+      });
+      box.insertAdjacentHTML("beforeend", '<div class="case-tabs__panel" hidden></div>');
+      ul.before(box);
+    });
+  }
+
+  // 2026-11-27 (его просьба, «Бренды 360°»): «Задача / Как делал / Объём» (.pj-facts) на телефоне — кнопки,
+  // текст пункта раскрывается под ними. На компьютере кнопки скрыты, список как был
+  function buildFactTabs(root) {
+    root.querySelectorAll(".pj-facts").forEach((ul, k) => {
+      const box = document.createElement("div");
+      box.className = "case-tabs case-tabs--facts";
+      box.dataset.caseTabs = "";
+      const lis = [...ul.children];
+      if (lis.length === 3) box.classList.add("case-tabs--3");
+      lis.forEach((li, i) => {
+        const key = "pf" + k + "-" + i;
+        li.dataset.tabSrc = key;
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "case-tabs__btn";
+        btn.dataset.tab = key;
+        btn.textContent = li.querySelector("b") ? li.querySelector("b").textContent : String(i + 1);
+        box.appendChild(btn);
+      });
+      box.insertAdjacentHTML("beforeend", '<div class="case-tabs__panel" hidden></div>');
+      ul.before(box);
+    });
+  }
+
+  // 2026-11-27 (его просьба): блок «Герои из нейросети…» на телефоне — одна кнопка во всю ширину:
+  // заголовок и иконки нейросетей внутри, тексты раскрываются под ней. Стоит прямо над картинкой с героями
+  function buildAiTabs(root) {
+    root.querySelectorAll(".hm-ai-row").forEach((row, k) => {
+      const key = "ai" + k;
+      const title = row.querySelector(".pj-sub");
+      row.querySelectorAll(".hm-ai__text").forEach((p) => { p.dataset.tabSrc = key; });
+      const box = document.createElement("div");
+      box.className = "case-tabs case-tabs--ai";
+      box.dataset.caseTabs = "";
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "case-tabs__btn";
+      btn.dataset.tab = key;
+      const name = document.createElement("span");
+      name.className = "case-tabs__name";
+      name.textContent = title ? title.textContent : "Нейросети";
+      btn.appendChild(name);
+      const icons = row.querySelector(".hm-ai");
+      if (icons) {
+        const copy = icons.cloneNode(true);
+        // у Gemini градиент задан по id — у копии свой id, иначе два одинаковых
+        copy.querySelectorAll("[id]").forEach((el) => {
+          const old = el.id;
+          el.id = old + "-b" + k;
+          copy.querySelectorAll("[fill]").forEach((f) => {
+            if (f.getAttribute("fill") === "url(#" + old + ")") f.setAttribute("fill", "url(#" + el.id + ")");
+          });
+        });
+        btn.appendChild(copy);
+      }
+      box.appendChild(btn);
+      box.insertAdjacentHTML("beforeend", '<div class="case-tabs__panel" hidden></div>');
+      row.after(box);
+    });
+  }
+
+  // Кнопки-раскрывашки описания кейса (2026-11-27, только телефон — на компьютере .case-tabs скрыт):
+  // нажал кнопку — под кнопками появляется копия текста с data-tab-src того же имени; нажал ещё раз — закрылось
+  modalBody.addEventListener("click", (event) => {
+    const btn = event.target.closest(".case-tabs__btn");
+    if (!btn) return;
+    const box = btn.closest("[data-case-tabs]");
+    const panel = box.querySelector(".case-tabs__panel");
+    const wasOpen = btn.classList.contains("is-active");
+    box.querySelectorAll(".case-tabs__btn").forEach((b) => b.classList.remove("is-active"));
+    panel.innerHTML = "";
+    panel.hidden = wasOpen;
+    if (wasOpen) return;
+    btn.classList.add("is-active");
+    modalBody.querySelectorAll('[data-tab-src="' + btn.dataset.tab + '"]').forEach((src) => {
+      if (src.matches("h4")) return; // заголовок не нужен — его называет сама кнопка
+      const copy = src.cloneNode(true);
+      copy.removeAttribute("data-tab-src");
+      panel.appendChild(copy);
+    });
   });
 
   // Переходы внутри окна:
@@ -255,6 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const img = el.querySelector("img");
         return {
           full: el.dataset.full || img.getAttribute("src"),
+          thumb: img.currentSrc || img.getAttribute("src"),   // превью: на телефоне показывается сразу, пока грузится большая
           title: img.alt,
           // Свои пропорции у каждой картинки (иначе рамка 3:4 от инфографики растягивает широкие кадры брендинга)
           free: true,
@@ -988,7 +1096,14 @@ document.addEventListener("DOMContentLoaded", () => {
       const n = items.length;
       let last = 0;
       const fit = () => {
-        if (PHONE.matches && !tall) { box.style.gridTemplateColumns = ""; last = 0; return; }
+        // 2026-11-27 (его правило для «Брендов 360°»): на телефоне тоже мозаика — макеты столбиком рядом с мокапом,
+        // по нажатию всё открывается во весь экран. В один столбец остаются только плотные (tight) и тройки (trio)
+        if (PHONE.matches && (conf.tight || box.classList.contains("pj-show--trio"))) { box.style.gridTemplateColumns = ""; last = 0; return; }
+        // Один очень длинный макет (растяжка 10×2): рядом с ним мокап выходит крошечным — на телефоне мокап сверху,
+        // обрезанный сверху и снизу до 2:1, макет под ним во всю ширину
+        const wide = PHONE.matches && n === 1 && items[0].r > 3;
+        box.classList.toggle("pj-show--wide", wide);
+        if (wide) { box.style.gridTemplateColumns = ""; last = 0; return; }
         const T = box.clientWidth;
         if (!T) return;
         const g = parseFloat(getComputedStyle(box).columnGap) || 16;
@@ -3346,6 +3461,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let lbItems = [];
   let lbIndex = 0;
   let lbInstagram = null;   // данные для интерфейса Instagram, null — обычный просмотр
+  let lbToken = 0;          // номер показа: ответ от старой картинки не трогает новую
 
   function renderLightbox() {
     const item = lbItems[lbIndex];
@@ -3356,12 +3472,23 @@ document.addEventListener("DOMContentLoaded", () => {
       renderInsta(item, lbInstagram);
     } else {
       lbImg.classList.remove("is-loaded");
+      // 2026-11-27 (он заметил подвисания на телефоне): token — чтобы догрузившаяся старая картинка не перебила новую;
+      // на телефоне сразу ставим уже загруженное превью, а большую подменяем, когда она загрузится
+      const token = ++lbToken;
       const ready = () => {
+        if (token !== lbToken) return;
         fitFreeImage(item);
         lbImg.classList.add("is-loaded");
       };
       lbImg.onload = ready;
-      lbImg.src = item.full;
+      if (item.thumb && item.thumb !== item.full && lightbox.classList.contains("lightbox--full")) {
+        lbImg.src = item.thumb;
+        const big = new Image();
+        big.onload = () => { if (token === lbToken) lbImg.src = item.full; };
+        big.src = item.full;
+      } else {
+        lbImg.src = item.full;
+      }
       lbImg.alt = item.title;
       // Прозрачный PNG (указатели, стикеры) — без тени и скругления, иначе вокруг фигуры видна тёмная рамка прямоугольника
       lbImg.classList.toggle("lightbox__img--clear", /\.png$/i.test(item.full));
@@ -3383,13 +3510,14 @@ document.addEventListener("DOMContentLoaded", () => {
     lbImg.style.height = "";
     if (!item.free || !lbImg.naturalWidth) return;
 
-    const zoom = item.zoom || 1;
-    const maxW = (window.innerWidth - (window.innerWidth > 960 ? 144 : 32)) * zoom;
-    const maxH = (window.innerHeight - 48) * zoom;
+    const full = lightbox.classList.contains("lightbox--full");
+    const zoom = full ? 1 : item.zoom || 1;
+    const maxW = full ? window.innerWidth : (window.innerWidth - (window.innerWidth > 960 ? 144 : 32)) * zoom;
+    const maxH = full ? window.innerHeight : (window.innerHeight - 48) * zoom;
     const w = lbImg.naturalWidth;
     const h = lbImg.naturalHeight;
-    let k = Math.min(maxW / w, maxH / h, item.max || 2);
-    if (item.px) k = Math.min(maxW / w, maxH / h, item.px / w); // ровно во столько px шириной, сколько просили
+    let k = full ? Math.min(maxW / w, maxH / h) : Math.min(maxW / w, maxH / h, item.max || 2);
+    if (item.px && !full) k = Math.min(maxW / w, maxH / h, item.px / w); // ровно во столько px шириной, сколько просили
     if (item.scroll) {
       k = Math.min(maxW, 900) / w;
       lbStage.classList.add("lightbox__stage--scroll");
@@ -3398,7 +3526,10 @@ document.addEventListener("DOMContentLoaded", () => {
     lbImg.style.height = Math.round(h * k) + "px";
   }
 
+  // 2026-11-27, его правило: на телефоне (до 640 px) просмотр картинок во ВСЕХ кейсах — во весь экран,
+  // без полей и уменьшений (data-zoom-pc, zoom, max, px действуют только на компьютере)
   function openLightbox(items, index, instagram) {
+    lightbox.classList.toggle("lightbox--full", !instagram && window.matchMedia("(max-width: 640px)").matches);
     lbItems = items;
     lbIndex = index;
     lbInstagram = instagram || null;
@@ -3426,7 +3557,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // В интерфейсе Instagram закрывает клик по фото поста, а комментарии и кнопки — нет
   lightbox.addEventListener("click", (event) => {
     const t = event.target;
-    if (t === lightbox || t === lbStage || t === lbImg || t.closest(".insta__media")) closeLightbox();
+    // 2026-11-27: на телефоне Reels открыт во всю ширину — закрывается и касанием по самому экрану Reels
+    if (t === lightbox || t === lbStage || t === lbImg || t.closest(".insta__media") || t.classList.contains("reel__screen")) closeLightbox();
   });
 
   // Клавиши. Перехватываем раньше окна проекта, чтобы Esc закрывал сначала лайтбокс
@@ -3542,9 +3674,9 @@ document.addEventListener("DOMContentLoaded", () => {
     lbStage.scrollTop = 0;
   }
 
-  function instaScreen(item, data) {
+  function instaScreen(item, data, opts = {}) {
     const seed = instaSeed(item.full);
-    const isStory = item.title.includes("Stories") || item.format === "highlights";   // актуальные — это сторис
+    const isStory = opts.story || item.title.includes("Stories") || item.format === "highlights";   // актуальные — это сторис
     lbInsta.className = "insta insta--screen";
     lbInsta.innerHTML = '<div class="reel insta__phone">' + (isStory
       ? REEL_TEMPLATES.story(data, (1 + (seed % 20)) + " ч.")
@@ -3554,7 +3686,12 @@ document.addEventListener("DOMContentLoaded", () => {
           shares: 1 + (seed % 12),
           music: data.music,
         })) + "</div>";
-    lbInsta.querySelector(".js-image").style.backgroundImage = "url('" + item.full + "')";
+    const screen = lbInsta.querySelector(".js-image");
+    screen.style.backgroundImage = "url('" + item.full + "')";
+    if (opts.fit) {
+      screen.classList.add("story--fit");
+      screen.insertAdjacentHTML("afterbegin", '<span class="story__fit"><img src="' + item.full + '" alt=""></span>');
+    }
     const caption = lbInsta.querySelector(".js-caption");
     if (caption) {
       const text = instaCaption(item).text;
@@ -3563,7 +3700,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderInsta(item, data) {
-    if (instaRatio(item, data) === "9x16") instaScreen(item, data);
+    // 2026-11-27, его поправка: «Лендинг» в Instagram показывается в историях — интерфейс Stories для всех его работ.
+    // Работа 4:5 стоит в истории по центру целиком, за ней размытая она же (как Instagram показывает пост в сторис)
+    if (item.format === "landing") instaScreen(item, data, { story: true, fit: instaRatio(item, data) !== "9x16" });
+    else if (instaRatio(item, data) === "9x16") instaScreen(item, data);
     else instaPost(item, data);
   }
 
@@ -3578,6 +3718,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const REEL_GAP = 20;                    // отступ между карточками, px
   const REEL_SPEED_MAX = 10;              // самая высокая скорость колесом: во столько раз быстрее обычной
   const REEL_SPEED_STEP = 0.5;            // на сколько меняется скорость за один щелчок колеса
+  const REEL_SPEED_PHONE = 5;             // на телефоне (до 640 px) скорость постоянная, колесом не меняется
   const REEL_SPEED_START = 3.5;           // с какой скоростью колонки бегут при открытии окна
   const LENS_PERIOD = 2.4;                // окно с кружком: секунд на один шаг при обычной скорости ×1
   const LENS_HOLD = 0.38;                 // какую долю шага картинка стоит в кружке
@@ -3925,7 +4066,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (lightbox.classList.contains("is-open")) {
       // Пока работа открыта большой, колонки стоят
     } else if (wallMode === "lens") {
-      wallPhase += (seconds * wallSpeed) / LENS_PERIOD;
+      if (!lensDrag) wallPhase += (seconds * wallSpeed) / LENS_PERIOD;
       placeLens();
     } else {
       wallColumns.forEach((column) => {
@@ -3992,7 +4133,9 @@ document.addEventListener("DOMContentLoaded", () => {
     buildWall();
     // Кто отключил анимацию в системе, тому лента не едет сама, но колесо работает
     // У кружка своя скорость: на высокой его не успеть рассмотреть
-    const startSpeed = info.startSpeed || (wallMode === "lens" ? 1 : REEL_SPEED_START);
+    // 2026-11-27, его просьба: на телефоне колеса нет — колонки всегда бегут с одной скоростью ×5 (REEL_SPEED_PHONE)
+    const onPhone = wallMode !== "lens" && window.matchMedia("(max-width: 640px)").matches;
+    const startSpeed = onPhone ? REEL_SPEED_PHONE : info.startSpeed || (wallMode === "lens" ? 1 : REEL_SPEED_START);
     wallSpeed = wallSpeedTarget = wallCalm.matches ? 0 : startSpeed;
     showWallSpeed();
     wallLastTime = performance.now();
@@ -4033,6 +4176,42 @@ document.addEventListener("DOMContentLoaded", () => {
     const card = event.target.closest(".reel, .hl-card");
     if (card) openLightbox(wallItems, Number(card.dataset.index), wallInstagram);
   });
+
+  // «Актуальные»: ряды можно тянуть пальцем влево и вправо (2026-11-27, его просьба). Ряд идёт за пальцем,
+  // второй ряд, как и раньше, движется навстречу. Отпустил — лента едет дальше сама. После протяжки клик не открывает работу
+  let lensDrag = null;
+  let lensDragged = false;
+  wallStream.addEventListener("pointerdown", (event) => {
+    if (wallMode !== "lens" || event.pointerType === "mouse") return;
+    const row = wallRows.find((r) => {
+      const box = r.lens.parentElement.getBoundingClientRect();
+      return event.clientY >= box.top && event.clientY <= box.bottom;
+    }) || wallRows[0];
+    if (!row) return;
+    lensDrag = { x: event.clientX, phase: wallPhase, row, id: event.pointerId };
+    lensDragged = false;
+  });
+  wallStream.addEventListener("pointermove", (event) => {
+    if (!lensDrag || event.pointerId !== lensDrag.id) return;
+    const dx = event.clientX - lensDrag.x;
+    if (Math.abs(dx) > 8) lensDragged = true;
+    // карточка стоит в d * pitch от центра, d растёт вместе с direction * фаза — отсюда знак
+    wallPhase = lensDrag.phase + (dx / lensDrag.row.pitch) * lensDrag.row.direction;
+    placeLens();
+  });
+  const lensDrop = (event) => {
+    if (!lensDrag || event.pointerId !== lensDrag.id) return;
+    // доводим до ближайшего целого шага, чтобы картинка встала в кружок, а не застряла между
+    const shift = lensDrag.row.phaseShift;
+    wallPhase = Math.round(wallPhase + shift) - shift;
+    lensDrag = null;
+    placeLens();
+  };
+  wallStream.addEventListener("pointerup", lensDrop);
+  wallStream.addEventListener("pointercancel", lensDrop);
+  wallStream.addEventListener("click", (event) => {
+    if (lensDragged) { event.stopImmediatePropagation(); event.preventDefault(); lensDragged = false; }
+  }, true);
 
   wallEl.querySelectorAll("[data-rw-close]").forEach((el) => el.addEventListener("click", closeReelsWall));
   wallEl.addEventListener("contextmenu", (event) => event.preventDefault()); // без меню «сохранить картинку»
@@ -4310,7 +4489,9 @@ document.addEventListener("DOMContentLoaded", () => {
       "</div>" +
       '<div class="ig-drum__view" tabindex="0" aria-label="Барабан с карточками: стрелки влево и вправо крутят его">' +
         '<span class="ig-drum__hint">Потяните, чтобы покрутить, нажмите, чтобы открыть</span>' +
-      "</div>";
+      "</div>" +
+      // 2026-11-27: на телефоне подсказка стоит под барабаном простым текстом и не пропадает (верхняя скрыта в CSS)
+      '<p class="ig-drum__note">Потяните, чтобы покрутить, нажмите, чтобы открыть</p>';
 
     const view = box.querySelector(".ig-drum__view");
     const hint = box.querySelector(".ig-drum__hint");
@@ -4600,7 +4781,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const sw = phone ? W * 0.78 : Math.min(W * 0.36, 400);
       const sh = sw * RATIO;                     // высота/ширина страницы: Taqachi 5:3, презентации 16:9 (data-ratio)
       const gap = sh * (phone ? 0.2 : 0.22);     // шаг листов в колонке
-      const padT = sh * 0.75, padB = sh * 1.1;   // запас сверху и снизу — изгибы не обрезаются
+      // запас сверху и снизу — изгибы не обрезаются. 2026-11-27 (его просьба, Kittek): на телефоне запас меньше —
+      // над колонкой не остаётся пустого места (колонка не обрезается: overflow-y у .bb-fly виден)
+      const padT = sh * (phone ? 0.22 : 0.75), padB = sh * (phone ? 0.6 : 1.1);
       const H = Math.round(padT + gap * (n - 1) + padB);
       root.style.height = H + "px";
       G = { W, H, phone, sw, sh, gap, padT, cx: W * 0.5, z: 260 }; // 2026-11-17: колонка по центру, лист вылетает поверх неё

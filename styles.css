@@ -5877,8 +5877,8 @@ button.case-tile:hover .case-tile__cover--brand img { transform: scale(1.05); }
   .hm-stop__slides::after,
   .hm-car,
   .hm-cloud,
-  .ip17__body,
-  .pj-dir .pj-icon * { animation: none !important; }
+  .ip17__body { animation: none !important; }
+  /* иконки «Что я делал» на телефоне снова живые (его просьба 2026-11-27: квадраты с анимированной иконкой) */
   .pj-story__lens { display: none; }
   .pj-cycle img { animation: none; }
   .pj-cycle img:first-child { opacity: 1; }
@@ -5984,8 +5984,13 @@ button.case-tile:hover .case-tile__cover--brand img { transform: scale(1.05); }
   }
   .pj-show__thumbs::-webkit-scrollbar { display: none; }
   .pj-show__thumbs > * { scroll-snap-align: start; }
-  .pj-show--stack:not(.pj-show--tall) { grid-template-columns: minmax(0, 1fr) !important; }
+  /* 2026-11-27: в один столбец на телефоне — только плотные и тройки; остальные стопки — макеты рядом с мокапом (script.js fit) */
+  .pj-show--stack.pj-show--tight, .pj-show--stack.pj-show--trio { grid-template-columns: minmax(0, 1fr) !important; }
   .pj-show--tight .pj-show__mock { order: -1; }
+  .pj-show--stack.pj-show--wide { grid-template-columns: minmax(0, 1fr) !important; }
+  .pj-show--wide .pj-show__mock { order: -1; }
+  .pj-show--wide .pj-show__mock .pj-show__pic { aspect-ratio: 2 / 1 !important; }
+  .pj-show--wide .pj-show__mock .pj-show__pic img { object-fit: cover; }
   .pj-show--tight .pj-show__list { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
   /* Три вертикальных макета (фасад): на телефоне в ряд над мокапом, чтобы смена была видна сразу под пальцем */
   .pj-show--trio .pj-show__list { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-auto-flow: row; }
@@ -7255,8 +7260,10 @@ button.case-tile:hover, .pj-dir:hover {
   .pack-switch__picks { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 600px) {
-  .pack-row { flex-wrap: wrap; }
-  .pack-fig { flex: 1 1 100% !important; }
+  /* 2026-11-27: панели вкусов (реклама + пачка, мокап + развёртка) на телефоне остаются рядом — см. «УПАКОВКА НА ТЕЛЕФОНЕ» */
+  /* и все ряды Taxtaniyoz (мясные чипсы 3 в ряд, 8 вариантов пакета мозаикой: 2 + 3 + 3) — его правка того же дня */
+  .pack-row:not(.pack-panel .pack-row, .brand--taxtaniyoz .pack-row) { flex-wrap: wrap; }
+  .pack-fig:not(.pack-panel .pack-fig, .brand--taxtaniyoz .pack-fig) { flex: 1 1 100% !important; }
   .pack-row--mock { width: 100%; }
 }
 
@@ -8330,4 +8337,430 @@ button.contact-link--copy { font: inherit; color: inherit; text-align: left; wid
   /* текст под «Проектами» — свой вариант для телефона: по ширине без больших пробелов */
   .t-desk { display: none; }
   .t-mob { display: inline; }
+}
+
+/* ==========================================================================
+   2026-11-27 (его правки)
+   1) Меню («Проекты, Обо мне, Навыки, Процесс») и кнопка-бургер выключены и на компьютере, и на телефоне.
+      Его просьба: не включать, пока он сам не попросит. Разметка и скрипт меню оставлены.
+   2) Телефон (до 640 px):
+      - шапка — его вертикальная картинка hero-phone.webp на весь первый экран, он с мышью по центру;
+        имя сверху на тучах, текст и кнопки внизу на тёмном полу;
+      - всё равняется по полям 28 px: фильтры растянуты до полей (текст по центру кнопки),
+        «Начало пути / Старое резюме / Вне работы» на любом телефоне помещаются между полями;
+      - «Сервисы и нейросети» — иконки с подписью, как на экране телефона (без плашек-меток).
+   ========================================================================== */
+.header { display: none !important; }
+.app-icons { display: none; }
+
+@media (max-width: 640px) {
+  /* ---- шапка ---- */
+  main > .section.hero {
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 64px 0 44px;
+    overflow: hidden;
+  }
+  .hero__scene {
+    position: absolute;
+    inset: 0;
+    width: auto;
+    height: auto;
+    margin: 0;
+    order: 0;
+    -webkit-mask-image: none;
+    mask-image: none;
+    --hero-pos: 4% 50%;                  /* 2026-11-27: правее, чтобы левый край мыши был виден целиком */
+  }
+  /* 2026-11-27 (его просьба): картинка шапки на телефоне крупнее на 12 % и чуть выше */
+  .hero__scene .hero__photo { transform: translateY(-4.5%) scale(1.12); transform-origin: 50% 50%; }
+  /* тучи сверху и пол снизу чуть темнее — имя и текст читаются */
+  .hero__scene::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: linear-gradient(180deg,
+      rgba(5, 8, 20, 0.5) 0%, rgba(5, 8, 20, 0) 26%,
+      rgba(5, 8, 20, 0) 58%, rgba(5, 8, 20, 0.72) 80%, rgba(5, 8, 20, 0.88) 100%);
+    pointer-events: none;
+  }
+  .hero__scene .hero-fx, .hero__scene canvas { display: none !important; }  /* живые слои нарисованы под широкую картинку */
+  .hero .hero__lead { margin-top: auto; }
+
+  /* ---- фильтры: две строки от поля до поля ---- */
+  .filters { justify-content: stretch; }
+  .filters .pill { flex: 1 1 auto; justify-content: center; text-align: center; padding: 0 8px; }
+
+  /* ---- «Начало пути / Старое резюме / Вне работы» — всегда между полями ---- */
+  .about-more__buttons {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    gap: 6px;
+    width: 100%;
+  }
+  .about-more__buttons .about-more__btn {
+    flex: 0 1 auto;
+    min-width: 0;
+    font-size: min(0.875rem, 3.35vw);
+    white-space: nowrap;
+  }
+
+  /* ---- сервисы и нейросети: иконки как на телефоне ---- */
+  .workflow-box .tags { display: none; }
+  .app-icons {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px 4px;
+    margin: 20px -14px 0;               /* ряд чуть шире текста плашки: длинные подписи не слипаются на узких телефонах */
+    padding: 0;
+    list-style: none;
+  }
+  .app-icons li { display: flex; flex-direction: column; align-items: center; gap: 7px; min-width: 0; }
+  .app-icons img {
+    width: 48px;
+    height: 48px;
+    border-radius: 23%;
+    box-shadow: 0 6px 14px -6px rgba(0, 0, 0, 0.35);
+  }
+  .app-icons span {
+    font-size: min(0.6875rem, 2.75vw);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    color: var(--g-muted);
+    text-align: center;
+  }
+}
+
+/* ==========================================================================
+   КЕЙСЫ НА ТЕЛЕФОНЕ (2026-11-27, начали с Инфографики по его правкам). Только до 640 px.
+   - описание кейса — 4 кнопки (Инфографика / Цель проекта / Что я делал / Проект), текст раскрывается под ними
+     (разметка .case-tabs + data-tab-src в index.html, нажатие — script.js «Кнопки-раскрывашки описания кейса»);
+   - переключатели разделов галерей (Все / Кресла / Столы…) — кнопками от поля до поля, текст по центру;
+   - барабан «Главные карточки»: выше, без затемнения по краям, подсказка под ним простым текстом и не пропадает
+   ========================================================================== */
+.case-tabs, .ig-drum__note { display: none; }
+@media (max-width: 640px) {
+  /* текст, который теперь открывается кнопками */
+  [data-tab-src] { display: none !important; }
+  .case-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 4px 0 8px;
+  }
+  .case-tabs__panel { grid-column: 1 / -1; margin-top: 10px; }
+  .case-tabs__panel[hidden] { display: none; }
+  .case-tabs__panel > :first-child { margin-top: 0; }
+  .case-tabs__panel > :last-child { margin-bottom: 0; }
+
+  /* кнопки — как фильтры на главной: тёмные, светлее кромка сверху; выбранная — рамка и текст цвета кейса */
+  .case-tabs__btn,
+  .smm-gallery__tabs .smm-tab {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    padding: 0 8px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-top-color: rgba(255, 255, 255, 0.2);
+    background: linear-gradient(180deg, #232427 0%, #18191b 100%);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    color: #c9cbcf;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 500;
+    text-align: center;
+    text-shadow: none;
+    white-space: nowrap;
+    opacity: 1;
+    cursor: pointer;
+  }
+  .case-tabs__btn.is-active,
+  .smm-gallery__tabs .smm-tab.is-active {
+    border-color: var(--case-accent, #7ce38b);
+    background: rgba(255, 255, 255, 0.04);
+    color: var(--case-accent, #7ce38b);
+  }
+  .smm-gallery__tabs .smm-tab::before,
+  .smm-gallery__tabs .smm-tab.is-active::before { display: none; }
+  /* ряд переключателей — от поля до поля, кнопки делят ширину, длинные переносятся во второй ряд */
+  .smm-gallery__tabs,
+  .smm-gallery__tabs--many {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 100%;
+  }
+  /* по 3 в ряд; неполный последний ряд делит ширину поровну (5 вкладок = 3 + 2) */
+  .smm-gallery__tabs .smm-tab { flex: 1 1 calc((100% - 16px) / 3); min-width: 0; }
+  .smm-gallery__tabs .smm-tab,
+  .smm-gallery__tabs .smm-tab:hover {
+    background: linear-gradient(180deg, #232427 0%, #18191b 100%) !important;
+    color: #c9cbcf !important;
+  }
+  .smm-gallery__tabs .smm-tab.is-active,
+  .smm-gallery__tabs .smm-tab.is-active:hover {
+    background: rgba(255, 255, 255, 0.04) !important;
+    color: var(--case-accent, #7ce38b) !important;
+  }
+
+  /* барабан: без затемнения по краям, ближе к переключателям */
+  .ig-drum__view {
+    margin-top: -36px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  .ig-drum__hint { display: none; }
+  .ig-drum__note {
+    display: block;
+    margin: 6px 0 0;                     /* не липнет к карточкам (его просьба 2026-11-27) */
+    font-size: min(0.8125rem, 3.3vw);   /* в одну строку и на узких телефонах */
+    color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+  }
+}
+@media (max-width: 640px) {
+  /* ---- SMM: 3 кнопки описания — в один ряд ---- */
+  .case-tabs--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  /* ---- SMM: просмотр работы как в самом Instagram — во всю ширину телефона, без полей и рамок
+     (посты 1:1, 4:5, Reels и Stories; обычный просмотр других кейсов не меняется) ---- */
+  .lightbox--insta { padding: 0; background: #000000; backdrop-filter: none; -webkit-backdrop-filter: none; }
+  .lightbox__stage--insta { padding: 0; justify-content: flex-start; }
+  .lightbox__stage--insta .insta--post {
+    width: 100%;
+    min-height: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+  /* Reels / Stories: экран 9:16 во всю ширину, по высоте — по центру на чёрном (картинка не обрезается) */
+  .lightbox__stage--insta { justify-content: flex-start; }
+  .lightbox--insta .lightbox__stage--insta:has(.insta__phone) { justify-content: center; }
+  .lightbox .reel.insta__phone {
+    width: 100vw;
+    max-height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+  }
+}
+@media (max-width: 640px) {
+  /* 2026-11-27, его просьба: внутри кейса со ссылкой «‹ Все SMM-проекты» стрелка и ✕ в правом углу не нужны.
+     На списке проектов и в кейсах без такой ссылки (Инфографика) ✕ остаётся — иначе окно не закрыть */
+  #modal:has(.case__back) .modal__back,
+  #modal:has(.case__back) .modal__close { display: none !important; }
+}
+/* Лендинг DAFNA (2026-11-27): работа 4:5 внутри истории — целиком по центру, за ней размытая она же */
+.reel__screen.story--fit { background-size: cover; }
+.reel__screen.story--fit::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  background: inherit;
+  filter: blur(22px) brightness(0.55);
+}
+.story__fit {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 0;
+}
+.story__fit img { display: block; width: 100%; height: auto; }
+@media (max-width: 640px) {
+  /* ---- окна Reels и «Актуальные» на телефоне (2026-11-27): во весь экран, без затемнения по краям ---- */
+  .reels-wall__window {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    transform: none;
+  }
+  .reels-wall__head { padding: 16px 16px 12px 28px; }
+  /* поля 28 px слева и справа, как во всей мобильной версии (его правило 2026-11-27): за них лента не заходит */
+  .reels-wall__stream,
+  .reels-wall__stream--lens {
+    margin: 0 28px 28px;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
+  /* «Актуальные» тянутся пальцем влево и вправо, вверх-вниз страница не нужна */
+  .reels-wall__stream--lens { pointer-events: auto; touch-action: pan-y; }
+}
+@media (max-width: 640px) {
+  /* Просмотр во весь экран (во всех кейсах, только телефон — его правило 2026-11-27; класс ставит openLightbox): без полей, фон чёрный, без скруглений */
+  .lightbox.lightbox--full { padding: 0; background: #000000; }
+  .lightbox--full .lightbox__img { border-radius: 0; box-shadow: none; }
+  .lightbox--full .lightbox__img:not([style*="width"]) { width: 100vw; height: auto; max-height: 100dvh; object-fit: contain; aspect-ratio: auto; }
+}
+
+@media (max-width: 640px) {
+  /* ==========================================================================
+     УПАКОВКА НА ТЕЛЕФОНЕ (2026-11-27, его правки: Ritos и Taxtaniyoz).
+     - вкусы — кружки с пачкой, под ними только вкус (герои скрыты), все в один ряд: так панель ближе к ним;
+     - панель вкуса — мозаикой: реклама и справа пачка в один ряд одной высоты, развёртка под ними во всю ширину
+       (у Taxtaniyoz: мокап и развёртка рядом). По нажатию — просмотр во весь экран
+     ========================================================================== */
+  .pack-switch__picks {
+    grid-template-columns: repeat(var(--n, 6), minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+  .pack-pick,
+  .pack-pick:hover,
+  .pack-pick.is-active {
+    gap: 6px;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    transform: none;
+  }
+  .pack-pick__img {
+    width: 100%;
+    max-width: 64px;
+    aspect-ratio: 1;
+    margin: 0;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+  }
+  .pack-pick.is-active .pack-pick__img { box-shadow: 0 0 0 2px var(--case-accent); }
+  .pack-pick b {
+    font-size: min(0.75rem, 3.1vw);
+    font-weight: 500;
+    line-height: 1.2;
+    opacity: 0.7;
+    -webkit-hyphens: none;
+    hyphens: none;
+  }
+  .pack-pick.is-active b { opacity: 1; color: var(--case-accent); }
+  .pack-pick span:not(.pack-pick__img) { display: none; }
+
+  .pack-panel { gap: 12px; }
+  .pack-panel .pack-row,
+  .brand--taxtaniyoz .pack-row { flex-wrap: nowrap; gap: 8px; }
+  .brand--taxtaniyoz .pack-row + .pack-row { margin-top: 8px; }
+  .pack-panel .pack-fig figcaption,
+  .brand--taxtaniyoz .pack-fig figcaption { margin-top: 6px; font-size: 0.75rem; }
+}
+@media (max-width: 640px) {
+  /* Просмотр на телефоне (2026-11-27, подвисания): без размытия фона под ним (фон и так чёрный),
+     открывается и меняет картинку сразу, без затухания */
+  .lightbox { backdrop-filter: none; -webkit-backdrop-filter: none; transition: none; }
+  .lightbox__img, .lightbox__img.is-loaded { transition: none; transform: none; }
+}
+@media (max-width: 640px) {
+  /* ==========================================================================
+     ЛОГО НА ТЕЛЕФОНЕ (2026-11-27, его правки)
+     ========================================================================== */
+  /* тап по картинкам и колонкам листов не даёт синей вспышки (подсветка нажатия в мобильных браузерах) */
+  html { -webkit-tap-highlight-color: transparent; }
+  .bb-fly, .bb-fly:focus, .bb-fly:focus-visible { outline: none; box-shadow: none; }
+
+  /* Taqachi «Платформа бренда»: пункты — кнопками (script.js buildPointTabs), текст под ними */
+  .brand-points--cols { display: none; }
+  .case-tabs--points { margin-top: 20px; }
+  .case-tabs__panel > li { display: block; list-style: none; margin: 0; padding: 0; }
+  .case-tabs__panel > li strong { display: none; }
+
+  /* Taqachi «Один знак — много форм»: три логотипа в один ряд одной высоты (каждый в своих пропорциях) */
+  .brand--taqachi .brand-logos { display: flex !important; gap: 8px; }
+  .brand--taqachi .brand-logos .brand-shot { height: auto; grid-column: auto; grid-row: auto; }
+  .brand--taqachi .brand-logos .brand-shot:nth-child(1) { flex: 0.5828 1 0; aspect-ratio: 651 / 1117; }
+  .brand--taqachi .brand-logos .brand-shot:nth-child(2) { flex: 1.0082 1 0; aspect-ratio: 1100 / 1091; }
+  .brand--taqachi .brand-logos .brand-shot:nth-child(3) { flex: 0.6584 1 0; aspect-ratio: 796 / 1209; }
+
+  /* Drevo Dobra: первый слайд варианта — во всю ширину, два других под ним рядом */
+  .brand--drevo .brand-slides { grid-template-columns: 1fr 1fr; gap: 8px; }
+  .brand--drevo .brand-slides .brand-shot:first-child { grid-column: 1 / -1; }
+}
+
+@media (max-width: 640px) {
+  /* ==========================================================================
+     БРЕНДЫ 360° НА ТЕЛЕФОНЕ (2026-11-27, его правки, начали с Home Market).
+     - вступление — 3 кнопки (Home Market / Проект / С кем работал), раздел «С кем я работал» спрятан в кнопку;
+     - «Задача / Как делал / Объём» — кнопки (script.js buildFactTabs);
+     - «Герои из нейросети…» — одна кнопка с иконками нейросетей над героями (script.js buildAiTabs)
+     ========================================================================== */
+  .pj-section--who { display: none; }
+  .pj-facts { display: none !important; }
+  .case-tabs--facts { margin: 4px 0 20px; }
+  .case-tabs--facts .case-tabs__panel > li { font-size: 0.9375rem; line-height: 1.55; color: rgba(255, 255, 255, 0.78); }
+  .case-tabs--facts .case-tabs__panel > li > b { display: none; }
+
+  .hm-ai-row { display: none !important; }
+  .case-tabs--ai { grid-template-columns: minmax(0, 1fr); margin: 8px 0 16px; }
+  .case-tabs--ai .case-tabs__btn {
+    height: auto;
+    min-height: 52px;
+    padding: 8px 10px 8px 14px;
+    justify-content: space-between;
+    gap: 10px;
+    white-space: normal;
+    text-align: left;
+  }
+  .case-tabs--ai .case-tabs__name { flex: 1 1 auto; min-width: 0; line-height: 1.25; }
+  .case-tabs--ai .hm-ai {
+    --ai: 30px !important;
+    display: grid;
+    grid-template-columns: repeat(4, 30px) !important;
+    gap: 5px;
+    margin: 0;
+    flex: none;
+  }
+  .case-tabs--ai .hm-ai li { border-radius: 7px; }
+  .case-tabs--ai .case-tabs__panel .hm-ai__text { display: block !important; }
+}
+@media (max-width: 640px) {
+  /* ---- Бренды 360°: «Что я делал» — 10 квадратов 5 × 2, в каждом живая иконка по центру и заголовок под ней
+     (описания убраны, по нажатию — переход к разделу, как раньше) ---- */
+  .pj-dirs.pj-dirs--five { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+  .pj-dirs--five .pj-dir {
+    aspect-ratio: 1;
+    min-width: 0;
+    padding: 2px;
+    gap: 3px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .pj-dirs--five .pj-dir .pj-icon { width: min(22px, 5vw); height: min(22px, 5vw); margin: 0; flex: none; }
+  .pj-dirs--five .pj-dir b {
+    font-size: min(0.5625rem, 2.25vw);
+    font-weight: 500;
+    line-height: 1.1;
+    -webkit-hyphens: manual;
+    hyphens: manual;                 /* длинные слова переносятся только по мягкому переносу в index.html */
+  }
+  .pj-dirs--five .pj-dir span { display: none; }
+
+  /* ---- «Как я работал»: как шаги на главной (Screenshot_624) — над каждым шагом полоска из чёрточек,
+     пока шаг горит, по ней бежит цвет проекта; «▶ название», иконка справа ---- */
+  .pj-steps .step { grid-template-areas: "title icon" "text text"; }
+  .pj-steps .pj-icon { grid-area: icon; margin: 0; transform: none !important; }
+  .pj-steps .step__title::before { border-left-color: var(--case-accent); }
+  .pj-steps .step.is-active .step__title { color: var(--case-accent); }
+  .pj-steps .step::after { background: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.22) 0 2px, transparent 2px 4px); }
+  .pj-steps .step::before,
+  .pj-steps .step.is-active::before,
+  .pj-steps .step.is-done::before {
+    top: 0;
+    left: 0;
+    right: auto;
+    width: 0;
+    height: 3px;
+    border-radius: 0;
+    transform: none;
+    box-shadow: none;
+    background: repeating-linear-gradient(90deg, var(--case-accent) 0 2px, transparent 2px 4px);
+    transition: width 1.4s linear;
+  }
+  .pj-steps .step.is-active::before,
+  .pj-steps .step.is-done::before { width: 100%; }
+  .pj-steps .step.is-done::before { transition: none; }
+  .pj-steps.is-resetting .step::before { transition: none; }
 }

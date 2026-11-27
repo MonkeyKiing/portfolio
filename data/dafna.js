@@ -400,7 +400,6 @@ window.GALLERIES["dafna"] = [
   { format: "landing", group: "stories", year: "2026", title: "Скидка на стол MARCO LEFT · Сентябрь 2026", thumb: "images/smm/dafna/landing/012-thumb.webp", full: "images/smm/dafna/landing/012.webp" },
   { format: "landing", group: "stories", year: "2026", title: "Скидка на стол NAMI · Сентябрь 2026", thumb: "images/smm/dafna/landing/017-thumb.webp", full: "images/smm/dafna/landing/017.webp" },
   { format: "landing", group: "stories", year: "2026", title: "Скидка на стол NEWGATE LEFT · Сентябрь 2026", thumb: "images/smm/dafna/landing/023-thumb.webp", full: "images/smm/dafna/landing/023.webp" },
-  { format: "landing", group: "posts", year: "2025", title: "Комбо с AIKO · Ноябрь 2025", thumb: "images/smm/dafna/landing/002-thumb.webp", full: "images/smm/dafna/landing/002.webp" },
   { format: "landing", group: "stories", year: "2026", title: "Кресло PRICHER, розовое · Август 2026", thumb: "images/smm/dafna/landing/010-thumb.webp", full: "images/smm/dafna/landing/010.webp" },
   { format: "landing", group: "stories", year: "2026", title: "Скидка на стол NAMI · Сентябрь 2026", thumb: "images/smm/dafna/landing/011-thumb.webp", full: "images/smm/dafna/landing/011.webp" },
   { format: "landing", group: "stories", year: "2026", title: "Скидка на стол NEWGATE LEFT · Сентябрь 2026", thumb: "images/smm/dafna/landing/018-thumb.webp", full: "images/smm/dafna/landing/018.webp" },
